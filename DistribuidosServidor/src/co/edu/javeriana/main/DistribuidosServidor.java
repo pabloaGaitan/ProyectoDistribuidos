@@ -6,6 +6,7 @@
 package co.edu.javeriana.main;
 
 import java.io.DataOutputStream;
+import java.io.File;
 import java.lang.management.ManagementFactory;
 import java.lang.management.OperatingSystemMXBean;
 import java.lang.reflect.Method;
@@ -25,8 +26,8 @@ public class DistribuidosServidor {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws IllegalAccessException {
-        System.out.println(System.getProperties().getProperty("os.arch"));
-        /*String ip = new String();
+        /*System.out.println(System.getProperties().getProperty("os.arch"));
+        String ip = new String();
         int puerto = 1594;
         try{
             ip = InetAddress.getLocalHost().getHostAddress();
@@ -38,45 +39,10 @@ public class DistribuidosServidor {
         }catch(Exception e){
             e.printStackTrace();
         } */
+        System.out.println(new File("c:/").list().length);
+        System.out.println(((Runtime.getRuntime().freeMemory()/1024)/1024));
         
-        /*HashMap<Integer,String> mapa = new HashMap<>();
-        Integer ids = 0 ;
-        OperatingSystemMXBean operatingSystemMXBean = ManagementFactory.getOperatingSystemMXBean();
-  for (Method method : operatingSystemMXBean.getClass().getDeclaredMethods()) {
-    method.setAccessible(true);
-    //if (method.getName().startsWith("get") && Modifier.isPublic(method.getModifiers())) {
-    if(method.getName().equals("getFreePhysicalMemorySize")||method.getName().equals("getTotalPhysicalMemorySize")){
-            ids++;
-            Object value = null;
-            Long valor = new Long(0);
-        try {
-            value = method.invoke(operatingSystemMXBean);
-            valor = (Long)value;
-            valor = (valor/1024)/1024;
-            mapa.put(ids, valor.toString());
-        } catch (Exception e) {
-            e.printStackTrace();
-        } // try
-        
-        System.out.println(method.getName() + " = " + valor);
-    } 
-  }*/
-        Mem mem = null;
-    CpuPerc cpuperc = null;
-    FileSystemUsage filesystemusage = null;
-    try {
-        mem = sigar.getMem();
-        cpuperc = sigar.getCpuPerc();
-        filesystemusage = sigar.getFileSystemUsage("C:");          
-    } catch (SigarException se) {
-        se.printStackTrace();
-    }
-
-
-    System.out.print(mem.getUsedPercent()+"\t");
-    System.out.print((cpuperc.getCombined()*100)+"\t");
-    System.out.print(filesystemusage.getUsePercent()+"\n");
-}   
+    }   
     
     
 }
