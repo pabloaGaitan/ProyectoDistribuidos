@@ -6,8 +6,12 @@
 package co.edu.javeriana.main;
 
 import co.edu.javeriana.thread.MainThread;
+import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStreamReader;
 import java.lang.management.ManagementFactory;
 import java.lang.management.OperatingSystemMXBean;
 import java.lang.reflect.Method;
@@ -16,6 +20,12 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.text.NumberFormat;
 import java.util.HashMap;
+import java.util.StringTokenizer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import co.edu.javeriana.data.DataObject;
+import java.io.ObjectOutputStream;
+import java.util.Map;
 
 /**
  *
@@ -47,32 +57,48 @@ public class DistribuidosServidor {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws IllegalAccessException {
-        //System.out.println(System.getProperties().getProperty("os.arch"));
-        //LLAMAR AL METODO DE ARCHIVO
+        cargarCoordinador("coordinador.txt");
         registrarse();
         MainThread listener = new MainThread();
         listener.start();
-        //System.out.println(new File("c:/").list().length);
-        //System.out.println(((Runtime.getRuntime().freeMemory()/1024)/1024));
+        
         
     }
     
     public static void registrarse(){
         String ip;
+        DataObject dato = new DataObject();
+        Map<Integer,String> mapa = new HashMap<>();
         try{
-            ip = InetAddress.getLocalHost().getHostAddress();
-            //Socket socket = new Socket(ipCoordinador,puertoCoordinador);
-            Socket socket = new Socket("172.20.10.9",1594);
-            DataOutputStream buffer = new DataOutputStream(socket.getOutputStream());
-            //buffer.writeUTF(ip+":"+puertoCoordinador);
-            buffer.writeUTF(ip+":"+1594);
-            
+            dato.setOperacion(1);
+            dato.setIpSolicitante(InetAddress.getLocalHost().getHostAddress());
+            mapa.put(1,"1594");
+            dato.setMensaje(mapa);
+            Socket socket = new Socket(ipCoordinador,puertoCoordinador);
+            ObjectOutputStream buffer = new ObjectOutputStream(socket.getOutputStream());
+            buffer.writeObject(dato);
             socket.close();
         }catch(Exception e){
             e.printStackTrace();
         } 
     }
     
+    public static void cargarCoordinador(String arch){
+        String cadena = new String();
+        try {
+            FileInputStream f = new FileInputStream(arch);
+            InputStreamReader in = new InputStreamReader(f);
+            BufferedReader bf = new BufferedReader(in);
+            cadena = bf.readLine();
+            StringTokenizer tok = new StringTokenizer(cadena, ",");
+            ipCoordinador = tok.nextToken();
+            puertoCoordinador = Integer.parseInt(tok.nextToken());
+            
+        } catch (Exception ex) {
+            Logger.getLogger(DistribuidosServidor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
     
     
     

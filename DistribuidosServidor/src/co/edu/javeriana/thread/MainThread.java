@@ -27,6 +27,7 @@ public class MainThread extends Thread implements Runnable{
             socket = new ServerSocket(1594);
             while(true){
                 Socket cliente = socket.accept();
+                cliente.setSoLinger(true,10);
                 ObjectInputStream buffer = new ObjectInputStream(cliente.getInputStream());
                 DataObject dato = (DataObject)buffer.readObject();
                 SendThread trata = new SendThread(dato);

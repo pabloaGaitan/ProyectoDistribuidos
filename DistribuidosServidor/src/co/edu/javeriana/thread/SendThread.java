@@ -33,19 +33,26 @@ public class SendThread extends Thread implements Runnable {
     }
     
     public void run(){
+        
         try {
-            if(!mensaje.isPeriodica()){
-                operaciones();
+            if(mensaje.getOperacion() == 1){
+                DistribuidosServidor.registrarse();
             }
-            Socket socket = new Socket(DistribuidosServidor.getIpCoordinador(), DistribuidosServidor.getPuertoCoordinador());
-            ObjectOutputStream buffer = new ObjectOutputStream(socket.getOutputStream());
-            buffer.writeObject(mensaje);
+            if(mensaje.getOperacion() == 3){   
+                if(!mensaje.isPeriodica()){
+                    clasificarRecursos();
+                }
+                Socket socket = new Socket(DistribuidosServidor.getIpCoordinador(), DistribuidosServidor.getPuertoCoordinador());
+                ObjectOutputStream buffer = new ObjectOutputStream(socket.getOutputStream());
+                mensaje.setOperacion(4);
+                buffer.writeObject(mensaje);
+            }
         } catch (IOException ex) {
             Logger.getLogger(SendThread.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
-    public void operaciones(){
+    public void clasificarRecursos(){
         Map<Integer,String> mapa;
         Map<Integer,String> mapaDatos = recursos();
         mapa = mensaje.getMensaje();
