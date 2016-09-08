@@ -29,12 +29,6 @@ public class DistribuidosCoordinador {
         // TODO code application logic here
         ServidorThread st = new ServidorThread();
         st.start();
-        
-        Scanner sc = new Scanner(System.in);
-        while(true){
-            String line = sc.nextLine();
-            System.out.println(line);
-        }
     }
     
 }
