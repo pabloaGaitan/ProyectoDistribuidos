@@ -1,11 +1,14 @@
+package co.edu.javeriana.thread;
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package co.edu.javeriana.thread;
 
 import co.edu.javeriana.data.DataObject;
+import co.edu.javeriana.main.DistribuidosServidor;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.lang.management.ManagementFactory;
 import java.lang.management.OperatingSystemMXBean;
 import java.lang.reflect.Method;
@@ -22,23 +25,27 @@ import java.util.logging.Logger;
  *
  * @author HP
  */
-public class SendThread {
+public class SendThread extends Thread implements Runnable {
+    private DataObject mensaje;
+    
+    public SendThread(DataObject mens){
+        mensaje = mens;
+    }
     
     public void run(){
-        DataObject data;
-        while(true){
-            if(MainThread.getCola().size()!=0){
-                data = MainThread.getCola().remove();
-                if(!data.isPeriodica()){
-                    operaciones(data);
-                }
-                //Socket socket = new Socket(, 1594)
+        try {
+            if(!mensaje.isPeriodica()){
+                operaciones();
             }
-            
+            Socket socket = new Socket(DistribuidosServidor.getIpCoordinador(), DistribuidosServidor.getPuertoCoordinador());
+            ObjectOutputStream buffer = new ObjectOutputStream(socket.getOutputStream());
+            buffer.writeObject(mensaje);
+        } catch (IOException ex) {
+            Logger.getLogger(SendThread.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
-    public void operaciones(DataObject mensaje){
+    public void operaciones(){
         Map<Integer,String> mapa;
         Map<Integer,String> mapaDatos = recursos();
         mapa = mensaje.getMensaje();

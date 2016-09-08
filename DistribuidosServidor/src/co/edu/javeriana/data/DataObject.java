@@ -20,6 +20,7 @@ public class DataObject implements Serializable{
      * 2 = Cant. Servidores (Cliente)
      * 3 = Sol. Recursos (Cliente)
      */
+    
     private int operacion; 
     private String ipSolicitante;
     private boolean periodica;
@@ -28,7 +29,7 @@ public class DataObject implements Serializable{
     
     /**
      * Esta información es relevante cuando el tipo de operación es 3
-     * 1 = Servidores al cual solicita
+     * 1 = Servidores al cual solicita \ servidor respuesta
      * 2 = Uso de CPU
      * 3 = Memoria física disponible
      * 4 = total de memoria fisica
