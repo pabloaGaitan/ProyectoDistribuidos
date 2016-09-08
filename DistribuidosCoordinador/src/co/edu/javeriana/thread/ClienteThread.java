@@ -24,9 +24,11 @@ import java.util.logging.Logger;
 public class ClienteThread extends Thread implements Runnable{
     
     private static Queue<DataObject> colaMensajes;
+    private static Queue<Socket> colaSockets;
     
     public ClienteThread(){
         colaMensajes = new LinkedList<>();
+        colaSockets = new LinkedList<>();
     }
     
     @Override
@@ -47,16 +49,12 @@ public class ClienteThread extends Thread implements Runnable{
                 cliente.setSoLinger (true, 10);
                 ObjectInputStream buffer = new ObjectInputStream(cliente.getInputStream());
                 DataObject data = (DataObject)buffer.readObject();
-                ObjectOutputStream buffer1 = new ObjectOutputStream(cliente.getOutputStream());
-                data.setIpSolicitante("akfhsald");
-                Scanner sc = new Scanner(System.in);
-                sc.next();
-                buffer1.writeObject(data);
                 colaMensajes.add(data);
+                colaSockets.add(cliente);
                 // Se cierra el socket con el cliente.
                 // La llamada anterior a setSoLinger() hará
                 // que estos cierres esperen a que el cliente retire los datos.
-                cliente.close();
+                //cliente.close();
             }
         }catch(Exception e){
             e.printStackTrace();
@@ -67,6 +65,10 @@ public class ClienteThread extends Thread implements Runnable{
                 Logger.getLogger(ServidorThread.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+    }
+    
+    public synchronized static Queue<Socket> getColaSockets(){
+        return colaSockets;
     }
     
     public synchronized static Queue<DataObject> getColaMensajes(){

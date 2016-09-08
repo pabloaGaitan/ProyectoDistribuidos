@@ -48,39 +48,11 @@ public class ColaServidorThread extends Thread implements Runnable{
             case 1:
                 registrar(data.getIpSolicitante(),data.getMensaje());
                 break;
-            case 3:
-                // lo manda el cliente
-                enviarServidor(data);
-                break;
             case 4:
                 //System.out.println(data.getMensaje().toString());
                 break;
             default:
                 break;
-        }
-    }
-    
-    public void enviarServidor(DataObject data){
-        Socket socket = null;
-        String cadena = data.getMensaje().get(1);
-        StringTokenizer tok = new StringTokenizer(cadena,",");
-        List<String> servidoresDestino = new ArrayList<>();
-        while(tok.hasMoreElements()){
-            servidoresDestino.add(tok.nextToken());
-        }
-        for (String s : servidoresDestino) {
-            if(servidores.containsKey(s)){
-                try{
-                    socket = new Socket(s,servidores.get(s));
-                    data.getMensaje().put(1, s); // cambiar la ip del servidor a quien se envia
-                    ObjectOutputStream buffer = new ObjectOutputStream(socket.getOutputStream());
-                    buffer.writeObject(data);
-                    socket.close();
-                }catch(Exception e){
-                    e.printStackTrace();
-                }
-            }else
-                System.out.println("ip no está");
         }
     }
     

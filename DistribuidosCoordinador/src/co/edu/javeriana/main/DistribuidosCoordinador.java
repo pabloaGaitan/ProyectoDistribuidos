@@ -34,8 +34,8 @@ public class DistribuidosCoordinador {
     public static void main(String[] args) {
         // TODO code application logic here
         ServidorThread st = new ServidorThread();
-        ClienteThread ct = new ClienteThread();
         ColaServidorThread cst = new ColaServidorThread();
+        ClienteThread ct = new ClienteThread();
         ColaClienteThread cct = new ColaClienteThread();
         st.start();
         cst.start();
