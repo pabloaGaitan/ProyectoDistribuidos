@@ -46,12 +46,13 @@ public class ServidorThread extends Thread implements Runnable{
                 // el cliente lea los datos, hasta un máximo de 10 segundos de espera.
                 // Si no ponemos esto, el socket se cierra inmediatamente y si el 
                 // cliente no ha tenido tiempo de leerlos, los datos se pierden.
-                //cliente.setSoLinger (true, 10);
+                cliente.setSoLinger (true, 10);
                 
-                ObjectInputStream buffer = new ObjectInputStream(cliente.getInputStream());
+                DataInputStream buffer = new DataInputStream(cliente.getInputStream());
                 
-                DataObject dato = (DataObject)buffer.readObject();
-                colaMensajes.add(dato);
+                String dato = (String)buffer.readUTF();
+                //colaMensajes.add(dato);
+                System.out.println(dato);
 
                 // Se cierra el socket con el cliente.
                 // La llamada anterior a setSoLinger() hará
