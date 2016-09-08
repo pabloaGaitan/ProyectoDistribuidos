@@ -31,26 +31,29 @@ public class ColaServidorThread extends Thread implements Runnable{
         while(true){
             //System.out.println("len "+ServidorThread.getColaMensajes().size());
             if(!ServidorThread.getColaMensajes().isEmpty()){
-                System.out.println("Entra");
                 data = ServidorThread.getColaMensajes().remove();
                 operaciones(data);
-                System.out.println(ServidorThread.getColaMensajes().size());
             }
         }
     }
     
     public void operaciones(DataObject data){
         switch(data.getOperacion()){
+            /**
+             * Cuando haya que volver a reconocer los servidores, la idea
+             * sería limpiar la lista y enviar un broadcast a todos los que
+             * conocemos para saber si aún están ahí. Luego aquellos que 
+             * contesten se vuelven a agregar a la lista
+             */
             case 1:
                 registrar(data.getIpSolicitante(),data.getMensaje());
                 break;
-            case 2:
-                break;
             case 3:
-                // manda cliente
+                // lo manda el cliente
+                enviarServidor(data);
                 break;
             case 4:
-                // manda servidor
+                //System.out.println(data.getMensaje().toString());
                 break;
             default:
                 break;
@@ -66,16 +69,18 @@ public class ColaServidorThread extends Thread implements Runnable{
             servidoresDestino.add(tok.nextToken());
         }
         for (String s : servidoresDestino) {
-            System.out.println(s);
-            try{
-                socket = new Socket(s,servidores.get(s));
-                data.getMensaje().put(1, s); // cambiar la ip del servidor a quien se envia
-                ObjectOutputStream buffer = new ObjectOutputStream(socket.getOutputStream());
-                buffer.writeObject(data);
-                socket.close();
-            }catch(Exception e){
-                e.printStackTrace();
-            }
+            if(servidores.containsKey(s)){
+                try{
+                    socket = new Socket(s,servidores.get(s));
+                    data.getMensaje().put(1, s); // cambiar la ip del servidor a quien se envia
+                    ObjectOutputStream buffer = new ObjectOutputStream(socket.getOutputStream());
+                    buffer.writeObject(data);
+                    socket.close();
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+            }else
+                System.out.println("ip no está");
         }
     }
     

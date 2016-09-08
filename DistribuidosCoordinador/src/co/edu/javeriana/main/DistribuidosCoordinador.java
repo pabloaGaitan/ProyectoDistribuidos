@@ -7,6 +7,7 @@ package co.edu.javeriana.main;
 
 import co.edu.javeriana.data.DataObject;
 import co.edu.javeriana.thread.ClienteThread;
+import co.edu.javeriana.thread.ColaClienteThread;
 import co.edu.javeriana.thread.ColaServidorThread;
 import co.edu.javeriana.thread.ServidorThread;
 import java.io.BufferedInputStream;
@@ -35,9 +36,11 @@ public class DistribuidosCoordinador {
         ServidorThread st = new ServidorThread();
         ClienteThread ct = new ClienteThread();
         ColaServidorThread cst = new ColaServidorThread();
+        ColaClienteThread cct = new ColaClienteThread();
         st.start();
         cst.start();
         ct.start();
+        //cct.start();
     }
     
 }
