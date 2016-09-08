@@ -8,10 +8,12 @@ package co.edu.javeriana.thread;
 import co.edu.javeriana.data.DataObject;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -43,9 +45,13 @@ public class ClienteThread extends Thread implements Runnable{
                 // Si no ponemos esto, el socket se cierra inmediatamente y si el 
                 // cliente no ha tenido tiempo de leerlos, los datos se pierden.
                 cliente.setSoLinger (true, 10);
-                
                 ObjectInputStream buffer = new ObjectInputStream(cliente.getInputStream());
                 DataObject data = (DataObject)buffer.readObject();
+                ObjectOutputStream buffer1 = new ObjectOutputStream(cliente.getOutputStream());
+                data.setIpSolicitante("akfhsald");
+                Scanner sc = new Scanner(System.in);
+                sc.next();
+                buffer1.writeObject(data);
                 colaMensajes.add(data);
                 // Se cierra el socket con el cliente.
                 // La llamada anterior a setSoLinger() hará

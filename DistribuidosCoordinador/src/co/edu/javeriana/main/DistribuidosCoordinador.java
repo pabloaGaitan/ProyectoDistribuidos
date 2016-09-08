@@ -40,7 +40,7 @@ public class DistribuidosCoordinador {
         st.start();
         cst.start();
         ct.start();
-        //cct.start();
+        cct.start();
     }
     
 }
