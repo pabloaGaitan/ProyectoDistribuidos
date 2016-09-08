@@ -6,15 +6,11 @@
 package co.edu.javeriana.thread;
 
 import co.edu.javeriana.data.DataObject;
-import com.sun.corba.se.impl.activation.ServerTableEntry;
-import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Map;
 import java.util.Queue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,23 +19,20 @@ import java.util.logging.Logger;
  *
  * @author ASUS
  */
-public class ServidorThread extends Thread implements Runnable{
+public class ClienteThread extends Thread implements Runnable{
     
     private static Queue<DataObject> colaMensajes;
     
-    public ServidorThread(){
+    public ClienteThread(){
         colaMensajes = new LinkedList<>();
-    }
-    
-    public synchronized static Queue<DataObject> getColaMensajes(){
-        return colaMensajes;
     }
     
     @Override
     public void run(){
         ServerSocket socket = null;
         try{
-            socket = new ServerSocket(1594);
+            // puerto diferente
+            socket = new ServerSocket(1595);
             while(true){
                 Socket cliente = socket.accept();
                 // Se hace que el cierre del socket sea "gracioso". Esta llamada sólo
@@ -68,5 +61,9 @@ public class ServidorThread extends Thread implements Runnable{
                 Logger.getLogger(ServidorThread.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+    }
+    
+    public synchronized static Queue<DataObject> getColaMensajes(){
+        return colaMensajes;
     }
 }

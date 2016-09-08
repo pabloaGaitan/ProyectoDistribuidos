@@ -5,6 +5,9 @@
  */
 package co.edu.javeriana.main;
 
+import co.edu.javeriana.data.DataObject;
+import co.edu.javeriana.thread.ClienteThread;
+import co.edu.javeriana.thread.ColaServidorThread;
 import co.edu.javeriana.thread.ServidorThread;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
@@ -12,8 +15,10 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Scanner;
 
 /**
@@ -28,7 +33,11 @@ public class DistribuidosCoordinador {
     public static void main(String[] args) {
         // TODO code application logic here
         ServidorThread st = new ServidorThread();
+        ClienteThread ct = new ClienteThread();
+        ColaServidorThread cst = new ColaServidorThread();
         st.start();
+        cst.start();
+        ct.start();
     }
     
 }

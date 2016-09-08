@@ -18,6 +18,7 @@ public class DataObject implements Serializable{
      * 1 = Registrarse (Servidores)
      * 2 = Cant. Servidores (Cliente)
      * 3 = Sol. Recursos (Cliente)
+     * 4 = reply (Servidor)
      */
     private int operacion; 
     private String ipSolicitante;
