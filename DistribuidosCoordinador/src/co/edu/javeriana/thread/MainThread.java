@@ -11,7 +11,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Queue;
 import java.util.Scanner;
 import java.util.logging.Level;
@@ -21,14 +23,17 @@ import java.util.logging.Logger;
  *
  * @author ASUS
  */
-public class ClienteThread extends Thread implements Runnable{
+public class MainThread extends Thread implements Runnable{
     
-    private static Queue<DataObject> colaMensajes;
-    private static Queue<Socket> colaSockets;
+    /*private static Queue<DataObject> colaMensajes;
+    private static Queue<Socket> colaSockets;*/
     
-    public ClienteThread(){
-        colaMensajes = new LinkedList<>();
-        colaSockets = new LinkedList<>();
+    private static Map<String,Integer> servidores;
+    
+    public MainThread(){
+        /*colaMensajes = new LinkedList<>();
+        colaSockets = new LinkedList<>();*/
+        servidores = new HashMap<>();
     }
     
     @Override
@@ -46,11 +51,13 @@ public class ClienteThread extends Thread implements Runnable{
                 // el cliente lea los datos, hasta un máximo de 10 segundos de espera.
                 // Si no ponemos esto, el socket se cierra inmediatamente y si el 
                 // cliente no ha tenido tiempo de leerlos, los datos se pierden.
-                cliente.setSoLinger (true, 10);
+                //cliente.setSoLinger (true, 10);
                 ObjectInputStream buffer = new ObjectInputStream(cliente.getInputStream());
                 DataObject data = (DataObject)buffer.readObject();
-                colaMensajes.add(data);
-                colaSockets.add(cliente);
+                
+                
+                //colaMensajes.add(data);
+                //colaSockets.add(cliente);
                 // Se cierra el socket con el cliente.
                 // La llamada anterior a setSoLinger() hará
                 // que estos cierres esperen a que el cliente retire los datos.
@@ -67,11 +74,7 @@ public class ClienteThread extends Thread implements Runnable{
         }
     }
     
-    public synchronized static Queue<Socket> getColaSockets(){
-        return colaSockets;
-    }
-    
-    public synchronized static Queue<DataObject> getColaMensajes(){
-        return colaMensajes;
+    public synchronized static Map<String,Integer> getServidores(){
+        return servidores;
     }
 }

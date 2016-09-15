@@ -11,7 +11,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
+import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,42 +20,47 @@ import java.util.logging.Logger;
  *
  * @author ASUS
  */
-public class ColaClienteThread extends Thread implements Runnable{
+public class SendThread extends Thread implements Runnable{
     
-    public void run(){
-        DataObject data;
-        Socket socket;
-        while(true){
-            //System.out.println("len "+ServidorThread.getColaMensajes().size());
-            if(!ClienteThread.getColaMensajes().isEmpty()){
-                try {
-                    data = ClienteThread.getColaMensajes().remove();
-                    socket = ClienteThread.getColaSockets().remove();
-                    operaciones(data,socket);
-                    socket.close();
-                } catch (IOException ex) {
-                    Logger.getLogger(ColaClienteThread.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        }
+    private Socket cliente;
+    private DataObject data;
+    
+    public SendThread(Socket socket, DataObject data){
+        cliente = socket;
+        this.data = data;
     }
     
-    public void operaciones(DataObject data, Socket cliente){
+    public void run(){
+        operaciones();
+    }
+    
+    public void operaciones(){
         switch(data.getOperacion()){
+            case 1:
+                registrar();
+                break;
             case 2:
-                numeroServidores(data,cliente);
+                numeroServidores();
                 break;
             case 3:
-                enviarServidor(data);
+                enviarServidor();
                 break;
             default:
                 break;
         }
     }
     
-    public void numeroServidores(DataObject data, Socket cliente){
+    public void registrar(){
+        int puerto = Integer.parseInt(data.getMensaje().get(1));
+        
+        if(!MainThread.getServidores().containsKey(data.getIpSolicitante())){
+            MainThread.getServidores().put(data.getIpSolicitante(),puerto);
+        }
+    }
+    
+    public void numeroServidores(){
         try{
-            data.getMensaje().put(1, ""+ColaServidorThread.getServidores().size());
+            data.getMensaje().put(1, ""+MainThread.getServidores().size());
             ObjectOutputStream buffer = new ObjectOutputStream(cliente.getOutputStream());
             buffer.writeObject(data);
         }catch(Exception e){
@@ -63,7 +68,7 @@ public class ColaClienteThread extends Thread implements Runnable{
         }
     }
     
-    public void enviarServidor(DataObject data){
+    public void enviarServidor(){
         Socket socket = null;
         String cadena = data.getMensaje().get(1);
         StringTokenizer tok = new StringTokenizer(cadena,",");
@@ -72,9 +77,9 @@ public class ColaClienteThread extends Thread implements Runnable{
             servidoresDestino.add(tok.nextToken());
         }
         for (String s : servidoresDestino) {
-            if(ColaServidorThread.getServidores().containsKey(s)){
+            if(MainThread.getServidores().containsKey(s)){
                 try{
-                    socket = new Socket(s,ColaServidorThread.getServidores().get(s));
+                    socket = new Socket(s,MainThread.getServidores().get(s));
                     data.getMensaje().put(1, s); // cambiar la ip del servidor a quien se envia
                     ObjectOutputStream buffer = new ObjectOutputStream(socket.getOutputStream());
                     buffer.writeObject(data);
@@ -86,5 +91,4 @@ public class ColaClienteThread extends Thread implements Runnable{
                 System.out.println("ip no está");
         }
     }
-    
 }

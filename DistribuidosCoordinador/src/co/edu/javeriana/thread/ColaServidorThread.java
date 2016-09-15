@@ -63,8 +63,4 @@ public class ColaServidorThread extends Thread implements Runnable{
             servidores.put(ip,puerto);
         }
     }
-    
-    public synchronized static Map<String,Integer> getServidores(){
-        return servidores;
-    }
 }
