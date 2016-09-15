@@ -55,7 +55,10 @@ public class MainThread extends Thread implements Runnable{
                 ObjectInputStream buffer = new ObjectInputStream(cliente.getInputStream());
                 DataObject data = (DataObject)buffer.readObject();
                 
+                System.out.println(data.getIpSolicitante());
                 
+                SendThread sent = new SendThread(cliente, data);
+                sent.start();
                 //colaMensajes.add(data);
                 //colaSockets.add(cliente);
                 // Se cierra el socket con el cliente.

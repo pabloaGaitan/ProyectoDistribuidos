@@ -32,11 +32,11 @@ public class DistribuidosCoordinador {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        ServidorThread st = new ServidorThread();
+        //ServidorThread st = new ServidorThread();
         //ColaServidorThread cst = new ColaServidorThread();
         MainThread ct = new MainThread();
         //ColaClienteThread cct = new ColaClienteThread();
-        st.start();
+        //st.start();
         //cst.start();
         ct.start();
         //cct.start();

@@ -3,12 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/Users/ASUS/Documents/NetBeansProjects/ProyectoDistribuidos/DistribuidosCoordinador/src/co/edu/javeriana/thread/SendThread.java</file>
             <file>file:/C:/Users/ASUS/Documents/NetBeansProjects/ProyectoDistribuidos/DistribuidosCoordinador/src/co/edu/javeriana/thread/ColaServidorThread.java</file>
-            <file>file:/C:/Users/ASUS/Documents/NetBeansProjects/ProyectoDistribuidos/DistribuidosCoordinador/src/co/edu/javeriana/thread/ColaClienteThread.java</file>
             <file>file:/C:/Users/ASUS/Documents/NetBeansProjects/ProyectoDistribuidos/DistribuidosCoordinador/src/co/edu/javeriana/data/DataObject.java</file>
             <file>file:/C:/Users/ASUS/Documents/NetBeansProjects/ProyectoDistribuidos/DistribuidosCoordinador/src/co/edu/javeriana/thread/ServidorThread.java</file>
+            <file>file:/C:/Users/ASUS/Documents/NetBeansProjects/ProyectoDistribuidos/DistribuidosCoordinador/src/co/edu/javeriana/thread/MainThread.java</file>
             <file>file:/C:/Users/ASUS/Documents/NetBeansProjects/ProyectoDistribuidos/DistribuidosCoordinador/src/co/edu/javeriana/main/DistribuidosCoordinador.java</file>
-            <file>file:/C:/Users/ASUS/Documents/NetBeansProjects/ProyectoDistribuidos/DistribuidosCoordinador/src/co/edu/javeriana/thread/ClienteThread.java</file>
         </group>
     </open-files>
 </project-private>

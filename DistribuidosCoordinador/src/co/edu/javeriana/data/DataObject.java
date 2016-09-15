@@ -29,7 +29,7 @@ public class DataObject implements Serializable{
     /**
      * Esta información es relevante cuando el tipo de operación es 3
      * 1 = Servidores al cual solicita
-     * 2 = Uso de CPU
+     * 2 = Total de memoria fisica
      * 3 = Memoria física disponible
      * 
      */

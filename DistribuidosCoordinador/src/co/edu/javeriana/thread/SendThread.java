@@ -7,6 +7,7 @@ package co.edu.javeriana.thread;
 
 import co.edu.javeriana.data.DataObject;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -55,6 +56,7 @@ public class SendThread extends Thread implements Runnable{
         
         if(!MainThread.getServidores().containsKey(data.getIpSolicitante())){
             MainThread.getServidores().put(data.getIpSolicitante(),puerto);
+            System.out.println("Se registró servidor con IP: " + data.getIpSolicitante());
         }
     }
     
@@ -69,7 +71,7 @@ public class SendThread extends Thread implements Runnable{
     }
     
     public void enviarServidor(){
-        Socket socket = null;
+        //Socket socket = null;
         String cadena = data.getMensaje().get(1);
         StringTokenizer tok = new StringTokenizer(cadena,",");
         List<String> servidoresDestino = new ArrayList<>();
@@ -79,16 +81,27 @@ public class SendThread extends Thread implements Runnable{
         for (String s : servidoresDestino) {
             if(MainThread.getServidores().containsKey(s)){
                 try{
-                    socket = new Socket(s,MainThread.getServidores().get(s));
+                    Socket socket = new Socket(s,MainThread.getServidores().get(s));
                     data.getMensaje().put(1, s); // cambiar la ip del servidor a quien se envia
                     ObjectOutputStream buffer = new ObjectOutputStream(socket.getOutputStream());
                     buffer.writeObject(data);
-                    socket.close();
+                    ObjectInputStream bufferIn = new ObjectInputStream(socket.getInputStream());
+                    data = (DataObject)bufferIn.readObject();
+                    responderCliente();
                 }catch(Exception e){
                     e.printStackTrace();
                 }
             }else
                 System.out.println("ip no está");
+        }
+    }
+    
+    public void responderCliente(){
+        try{
+            ObjectOutputStream bufferOut = new ObjectOutputStream(cliente.getOutputStream());
+            bufferOut.writeObject(data);
+        }catch(Exception e){
+            e.printStackTrace();
         }
     }
 }
