@@ -20,20 +20,27 @@ public class DataObject implements Serializable{
      * 2 = Cant. Servidores (Cliente)
      * 3 = Sol. Recursos (Cliente)
      */
-    private int operacion; 
+    
+    private int operacion;
+    private int idServidor;
     private String ipSolicitante;
     private boolean periodica;
     private int tiempoTotal;
     private int intervalo;
+    private boolean ultimo;
     
     /**
      * Esta información es relevante cuando el tipo de operación es 3
-     * 1 = Servidores al cual solicita
-     * 2 = Uso de CPU
-     * 3 = Memoria física disponible
-     * 4 = total de memoria fisica
+     * 1 = Servidores al cual solicita \ servidor respuesta
+     * 2 = Arquitectura
+     * 3 = Cores
+     * 4 = total de RAM
+     * 5 = Consumo total de cpu
+     * 6 = Memoria RAM usada
+     * 7 = Memoria RAM disponible
+     * 8 = sistema de archivos
      */
-    private Map<Integer,String> mensaje;
+    private Map<Integer, Map<Integer,String>> mensaje;
 
     public int getOperacion() {
         return operacion;
@@ -75,11 +82,27 @@ public class DataObject implements Serializable{
         this.intervalo = intervalo;
     }
 
-    public Map<Integer, String> getMensaje() {
+    public Map<Integer,Map<Integer, String>> getMensaje() {
         return mensaje;
     }
 
-    public void setMensaje(Map<Integer, String> mensaje) {
+    public void setMensaje(Map<Integer,Map<Integer, String>> mensaje) {
         this.mensaje = mensaje;
+    }
+
+    public int getIdServidor() {
+        return idServidor;
+    }
+
+    public void setIdServidor(int idServidor) {
+        this.idServidor = idServidor;
+    }
+
+    public boolean isUltimo() {
+        return ultimo;
+    }
+
+    public void setUltimo(boolean ultimo) {
+        this.ultimo = ultimo;
     }
 }

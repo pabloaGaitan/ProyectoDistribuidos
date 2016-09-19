@@ -7,7 +7,6 @@ package co.edu.javeriana.main;
 
 import co.edu.javeriana.data.DataObject;
 import co.edu.javeriana.thread.MainThread;
-import co.edu.javeriana.thread.ColaServidorThread;
 import co.edu.javeriana.thread.ServidorThread;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;

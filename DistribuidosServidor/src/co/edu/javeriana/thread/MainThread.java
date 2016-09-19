@@ -20,15 +20,6 @@ import java.util.logging.Logger;
  * @author HP
  */
 public class MainThread extends Thread implements Runnable{
-    private static Queue<DataObject> cola;
-    
-    public MainThread(){
-        cola = new LinkedList<>();
-    }
-
-    public static Queue<DataObject> getCola() {
-        return cola;
-    }
     
     public void run(){
         ServerSocket socket = null;
@@ -36,10 +27,12 @@ public class MainThread extends Thread implements Runnable{
             socket = new ServerSocket(1594);
             while(true){
                 Socket cliente = socket.accept();
+                //cliente.setSoLinger(true,10);
                 ObjectInputStream buffer = new ObjectInputStream(cliente.getInputStream());
                 DataObject dato = (DataObject)buffer.readObject();
-                cola.add(dato);
-                cliente.close();
+                SendThread trata = new SendThread(dato,cliente);
+                trata.start();
+                //cliente.close();
             }
         }catch(Exception e){
             e.printStackTrace();
