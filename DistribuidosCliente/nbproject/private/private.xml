@@ -5,7 +5,9 @@
         <group>
             <file>file:/C:/Users/redes/Desktop/DistribuidosCliente/src/co/edu/javeriana/data/DataObject.java</file>
             <file>file:/C:/Users/redes/Desktop/DistribuidosCliente/src/co/edu/javeriana/main/SistemaCliente.java</file>
-            <file>file:/C:/Users/redes/Desktop/DistribuidosCliente/src/co/edu/javeriana/main/DistribuidosCliente.java</file>
+            <file>file:/C:/Users/redes/Desktop/DistribuidosCliente/src/co/edu/javeriana/GUI/InfoMensajes.java</file>
+            <file>file:/C:/Users/redes/Desktop/DistribuidosCliente/src/co/edu/javeriana/GUI/Principal.java</file>
+            <file>file:/C:/Users/redes/Desktop/DistribuidosCliente/src/co/edu/javeriana/thread/RecibirThread.java</file>
         </group>
     </open-files>
 </project-private>

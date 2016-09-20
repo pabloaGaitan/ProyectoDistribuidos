@@ -81,7 +81,7 @@ public class SendThread extends Thread implements Runnable {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        mens.put(1, mapa);
+        mens.put(mensaje.getIdServidor(), mapa);
         mensaje.setMensaje(mens);
         System.out.println(mapa.toString());
     }

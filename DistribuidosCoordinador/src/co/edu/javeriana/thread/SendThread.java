@@ -10,6 +10,7 @@ import co.edu.javeriana.data.ServidorPuerto;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.ConnectException;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
@@ -71,8 +72,7 @@ public class SendThread extends Thread implements Runnable{
         if(!containsServidor(server.getIp())){
             MainThread.getServidores().add(server);
             System.out.println("Se registró servidor con IP: " + data.getIpSolicitante());
-        }else
-            System.out.println("ya esta  .. . . . ");
+        }
     }
     
     public void numeroServidores(){
@@ -89,33 +89,30 @@ public class SendThread extends Thread implements Runnable{
     }
     
     public void enviarServidor(){
-        System.out.println(idServidor);
+        Socket socket = null;
+        ObjectOutputStream buffer = null;
+        ObjectInputStream bufferIn = null;
         if(idServidor >= MainThread.getServidores().size()){
-            System.out.println("error, id no existe");
+            System.out.println("error, id no existe"); // servidor no existe
+            data.getMensaje().get(idServidor+1).put(405, "Servidor no existe");
+            MainThread.getServidores().remove(idServidor);
+            responderCliente();
         }else{
             ServidorPuerto servidorDestino = MainThread.getServidores().get(idServidor);
             long currentTime;
             int cont = 1;
             if(containsServidor(servidorDestino.getIp())){
                 try{
-                    Socket socket = new Socket(servidorDestino.getIp(),Integer.parseInt(servidorDestino.getPuerto()));
-                    ObjectOutputStream buffer = new ObjectOutputStream(socket.getOutputStream());
-                    buffer.writeObject(data);
-                    ObjectInputStream bufferIn = new ObjectInputStream(socket.getInputStream());
-                    data = (DataObject)bufferIn.readObject();
-                    System.out.println(data.getMensaje().toString());
-                    socket.close();
-                    responderCliente();
-                    if(data.isPeriodica()){
-                        // something
-                        long endTime = data.getTiempoTotal();
+                    if(data.getMensaje().get(idServidor+1).get(9).equals("1")){
+                        long tiempoTotal = Integer.parseInt(data.getMensaje().get(idServidor+1).get(10));
+                        long intervalo = Integer.parseInt(data.getMensaje().get(idServidor+1).get(11));
                         currentTime = (System.nanoTime() - startTime)/1000000000;
-                        while(currentTime <= endTime+2){
-                            if((System.nanoTime()-startTime)/1000000000 == data.getIntervalo()*cont){
+                        while(currentTime <= tiempoTotal+2){
+                            if((System.nanoTime()-startTime)/1000000000 == intervalo*cont){
                                 socket = new Socket(servidorDestino.getIp(),Integer.parseInt(servidorDestino.getPuerto()));
                                 buffer = new ObjectOutputStream(socket.getOutputStream());
-                                if(cont == (data.getTiempoTotal()/data.getIntervalo()))
-                                    data.setUltimo(true);
+                                /*if(cont == (data.getTiempoTotal()/data.getIntervalo()))
+                                    data.setUltimo(true);*/
                                 buffer.writeObject(data);
                                 bufferIn = new ObjectInputStream(socket.getInputStream());
                                 data = (DataObject)bufferIn.readObject();
@@ -125,12 +122,24 @@ public class SendThread extends Thread implements Runnable{
                             }
                             currentTime = (System.nanoTime() - startTime)/1000000000;
                         }
+                    }else{
+                        socket = new Socket(servidorDestino.getIp(),Integer.parseInt(servidorDestino.getPuerto()));
+                        buffer = new ObjectOutputStream(socket.getOutputStream());
+                        buffer.writeObject(data);
+                        bufferIn = new ObjectInputStream(socket.getInputStream());
+                        data = (DataObject)bufferIn.readObject();
+                        socket.close();
+                        responderCliente();
                     }
+                }catch(ConnectException ex){
+                    System.out.println("time");
+                    data.getMensaje().get(idServidor+1).put(404, "Servidor caido");
+                    MainThread.getServidores().remove(idServidor);
+                    responderCliente();
                 }catch(Exception e){
                     e.printStackTrace();
                 }
-            }else
-                System.out.println("ip no está");
+            }
         }
     }
     

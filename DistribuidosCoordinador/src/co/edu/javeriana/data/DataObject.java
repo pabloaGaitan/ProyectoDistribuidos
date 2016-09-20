@@ -24,6 +24,9 @@ public class DataObject implements Serializable{
     private int operacion;
     private int idServidor;
     private String ipSolicitante;
+    /**
+     * Quitar estos cuatro futuramente
+     */
     private boolean periodica;
     private int tiempoTotal;
     private int intervalo;
@@ -39,6 +42,11 @@ public class DataObject implements Serializable{
      * 6 = Memoria RAM usada
      * 7 = Memoria RAM disponible
      * 8 = sistema de archivos
+     * 9 = Periodico = 1, No periodico = 0
+     * 10 = Tiempo Total
+     * 11 = Intervalo
+     * 404 = Servidor caido
+     * 405 = servidor no existe
      */
     private Map<Integer, Map<Integer,String>> mensaje;
 

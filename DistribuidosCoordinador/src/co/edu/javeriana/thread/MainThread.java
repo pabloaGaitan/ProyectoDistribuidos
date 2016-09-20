@@ -68,12 +68,6 @@ public class MainThread extends Thread implements Runnable{
             }
         }catch(Exception e){
             e.printStackTrace();
-        }finally{
-            try {
-                socket.close();
-            } catch (IOException ex) {
-                Logger.getLogger(ServidorThread.class.getName()).log(Level.SEVERE, null, ex);
-            }
         }
     }
     

@@ -37,7 +37,7 @@ public class DistribuidosCliente {
         Map <Integer,String> mapa = new HashMap<>();
         try {
             //while(true){
-            data = cantServers();
+           // data = cantServers();
             data = menu();
             Socket socket = new Socket(Persistence.getIpCoordinador(),Persistence.getPuertoCoordinador());
             //socket.setSoLinger(true, 10);
@@ -71,8 +71,8 @@ public class DistribuidosCliente {
         DataObject data = new DataObject();
         Scanner in = new Scanner(System.in);
         System.out.println("servidores: ");
-        servs = in.next();
-        
+        //servs = in.next();
+        servs = "1,2";
         contador = 0;
         
         StringTokenizer tok = new StringTokenizer(servs,",");
@@ -80,11 +80,14 @@ public class DistribuidosCliente {
         System.out.println(contador);
         while(tok.hasMoreElements()){
             System.out.println("Periodica?: ");
-            periodica = in.next();
+            //periodica = in.next();
+            periodica = "0";
             if(periodica.equals("1")){
                 System.out.println("total, intervalo: ");
-                total = in.next();
-                intervalo = in.next();
+                //total = in.next();
+                total = "60";
+                intervalo = "20";
+                //intervalo = in.next();
             }
                 
             System.out.println("1. Arquitecura");
@@ -100,7 +103,9 @@ public class DistribuidosCliente {
             while(tok1.hasMoreElements()){
                 map.put(Integer.parseInt(tok1.nextToken())+1, "");
             }
+            System.out.println(map.toString());
             mensaje.put(Integer.parseInt(tok.nextToken()), map);
+            System.out.println(mensaje.toString());
         }
         try {
             data.setIpSolicitante(InetAddress.getLocalHost().getHostAddress());
@@ -116,11 +121,10 @@ public class DistribuidosCliente {
             contador = (data.getTiempoTotal()/data.getIntervalo())*2; 
         }
         data.setUltimo(false);
-        System.out.println("loooookloooook"+data.getMensaje().toString());
         return data;
     }
     
-    public static DataObject cantServers(){
+    public static int cantServers(){
         Map<Integer,Map<Integer, String>> mensaje = new HashMap<>();
         Map<Integer, String> map = new HashMap<>();
         DataObject data = new DataObject();
@@ -134,7 +138,7 @@ public class DistribuidosCliente {
         data.setOperacion(2);
         data.setPeriodica(false);
         data.setTiempoTotal(0);
-        return data;
+        return Integer.parseInt(data.getMensaje().get(1).get(1));
     }
     
 }
