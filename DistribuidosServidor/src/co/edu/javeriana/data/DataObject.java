@@ -20,14 +20,9 @@ public class DataObject implements Serializable{
      * 2 = Cant. Servidores (Cliente)
      * 3 = Sol. Recursos (Cliente)
      */
-    
     private int operacion;
     private int idServidor;
     private String ipSolicitante;
-    private boolean periodica;
-    private int tiempoTotal;
-    private int intervalo;
-    private boolean ultimo;
     
     /**
      * Esta información es relevante cuando el tipo de operación es 3
@@ -39,6 +34,11 @@ public class DataObject implements Serializable{
      * 6 = Memoria RAM usada
      * 7 = Memoria RAM disponible
      * 8 = sistema de archivos
+     * 9 = Periodico = 1, No periodico = 0
+     * 10 = Tiempo Total
+     * 11 = Intervalo
+     * 404 = Servidor caido
+     * 405 = servidor no existe
      */
     private Map<Integer, Map<Integer,String>> mensaje;
 
@@ -58,30 +58,6 @@ public class DataObject implements Serializable{
         this.ipSolicitante = ipSolicitante;
     }
 
-    public boolean isPeriodica() {
-        return periodica;
-    }
-
-    public void setPeriodica(boolean periodica) {
-        this.periodica = periodica;
-    }
-
-    public int getTiempoTotal() {
-        return tiempoTotal;
-    }
-
-    public void setTiempoTotal(int tiempoTotal) {
-        this.tiempoTotal = tiempoTotal;
-    }
-
-    public int getIntervalo() {
-        return intervalo;
-    }
-
-    public void setIntervalo(int intervalo) {
-        this.intervalo = intervalo;
-    }
-
     public Map<Integer,Map<Integer, String>> getMensaje() {
         return mensaje;
     }
@@ -96,13 +72,5 @@ public class DataObject implements Serializable{
 
     public void setIdServidor(int idServidor) {
         this.idServidor = idServidor;
-    }
-
-    public boolean isUltimo() {
-        return ultimo;
-    }
-
-    public void setUltimo(boolean ultimo) {
-        this.ultimo = ultimo;
     }
 }

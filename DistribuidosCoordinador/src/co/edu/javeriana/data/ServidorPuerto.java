@@ -8,6 +8,7 @@ package co.edu.javeriana.data;
 /**
  *
  * @author ASUS
+ * Guarda la información que se requiere de un servidor.
  */
 public class ServidorPuerto {
     

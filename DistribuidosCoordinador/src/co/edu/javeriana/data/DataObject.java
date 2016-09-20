@@ -12,6 +12,7 @@ import java.util.Map;
 /**
  *
  * @author ASUS
+ * Clase que representa el objeto que se estará enviando entre las máquinas
  */
 public class DataObject implements Serializable{
     
@@ -20,17 +21,9 @@ public class DataObject implements Serializable{
      * 2 = Cant. Servidores (Cliente)
      * 3 = Sol. Recursos (Cliente)
      */
-    
     private int operacion;
     private int idServidor;
     private String ipSolicitante;
-    /**
-     * Quitar estos cuatro futuramente
-     */
-    private boolean periodica;
-    private int tiempoTotal;
-    private int intervalo;
-    private boolean ultimo;
     
     /**
      * Esta información es relevante cuando el tipo de operación es 3
@@ -66,30 +59,6 @@ public class DataObject implements Serializable{
         this.ipSolicitante = ipSolicitante;
     }
 
-    public boolean isPeriodica() {
-        return periodica;
-    }
-
-    public void setPeriodica(boolean periodica) {
-        this.periodica = periodica;
-    }
-
-    public int getTiempoTotal() {
-        return tiempoTotal;
-    }
-
-    public void setTiempoTotal(int tiempoTotal) {
-        this.tiempoTotal = tiempoTotal;
-    }
-
-    public int getIntervalo() {
-        return intervalo;
-    }
-
-    public void setIntervalo(int intervalo) {
-        this.intervalo = intervalo;
-    }
-
     public Map<Integer,Map<Integer, String>> getMensaje() {
         return mensaje;
     }
@@ -104,13 +73,5 @@ public class DataObject implements Serializable{
 
     public void setIdServidor(int idServidor) {
         this.idServidor = idServidor;
-    }
-
-    public boolean isUltimo() {
-        return ultimo;
-    }
-
-    public void setUltimo(boolean ultimo) {
-        this.ultimo = ultimo;
     }
 }

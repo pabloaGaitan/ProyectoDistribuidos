@@ -22,6 +22,8 @@ import java.util.logging.Logger;
 /**
  *
  * @author ASUS
+ * Este hilo trata el mensaje que llega al listener, según la operación que
+ * se especifica en el DataObject, se ejecutará una acción diferente.
  */
 public class SendThread extends Thread implements Runnable{
     
@@ -36,11 +38,18 @@ public class SendThread extends Thread implements Runnable{
         this.idServidor = idServidor;
     }
     
+    /**
+     * Método que ejecutará el hilo.
+     */
     public void run(){
         startTime = System.nanoTime();
         operaciones();
     }
     
+    /**
+     * Aquí se clasifica el mensaje que ha llegado según el número que tenga
+     * en el atributo "Operacion" del DataObject.
+     */
     public void operaciones(){
         switch(data.getOperacion()){
             case 1:
@@ -58,6 +67,11 @@ public class SendThread extends Thread implements Runnable{
         }
     }
     
+    /**
+     * Revisa si la ip está ya registrada o no.
+     * @param ip del servidor que se está revisando
+     * @return True si está, false si no está
+     */
     public boolean containsServidor(String ip){
         for(ServidorPuerto s: MainThread.getServidores())
             if(s.getIp().equals(ip))
@@ -65,6 +79,10 @@ public class SendThread extends Thread implements Runnable{
         return false;
     }
     
+    /**
+     * Cuando un servidor manda un mensaje para poder hacer parte del sistema,
+     * aquí se agrega a la lista con su correspondiente ip y puerto.
+     */
     public void registrar(){
         int puerto = Integer.parseInt(data.getMensaje().get(1).get(1));
         ServidorPuerto server = new ServidorPuerto(data.getIpSolicitante(), puerto+"");
@@ -75,6 +93,11 @@ public class SendThread extends Thread implements Runnable{
         }
     }
     
+    /**
+     * Un cliente, para poder hacer consultas, primero debe saber cuantos
+     * servidores hay en el sistema, por lo que cuando el cliente manda, se le
+     * contesta con la cantidad actual de servidores.
+     */
     public void numeroServidores(){
         Map<Integer,String> map;
         try{
@@ -88,6 +111,11 @@ public class SendThread extends Thread implements Runnable{
         }
     }
     
+    /**
+     * Cuando el cliente solicita información sobre un servidor, es aquí donde
+     * se procesa dicha solicitud, revisando si es periódica o no, también se 
+     * mira si el servidor aún sigue en línea.
+     */
     public void enviarServidor(){
         Socket socket = null;
         ObjectOutputStream buffer = null;
@@ -143,6 +171,11 @@ public class SendThread extends Thread implements Runnable{
         }
     }
     
+    /**
+     * Después de que el servidor haya contestado, o se tenga una respuesta para
+     * la solicitud que haya hecho el cliente, se le devuelven los mensajes
+     * por el mismo socket por el cual se recibió.
+     */
     public void responderCliente(){
         try{
             ObjectOutputStream bufferOut = new ObjectOutputStream(cliente.getOutputStream());
