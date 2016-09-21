@@ -31,7 +31,12 @@ public class Principal extends javax.swing.JFrame {
      */
     public Principal() {
         initComponents();
-        Persistence.cargarCoordinador("coordinador.txt");
+        this.setTitle("Cliente");
+        try{
+            Persistence.cargarCoordinador("coordinador.txt");
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, e.toString(),"Error",JOptionPane.ERROR_MESSAGE);
+        }
         BenviarConsulta.setEnabled(false);
         this.setResizable(false);
     }
@@ -177,7 +182,7 @@ public class Principal extends javax.swing.JFrame {
                     }
                 }else{
                     periodicos.add(false);
-                    intervalos.add("");
+                    intervalos.add("1000");
                     tiempos.add("");
                 }
             }
@@ -187,6 +192,8 @@ public class Principal extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null,"¿Seguro no quiere consultar nada?", "WARNING",JOptionPane.WARNING_MESSAGE);
         if(continuar && opc.size()>0){
             InfoMensajes inf = new InfoMensajes();
+            inf.setMain(this);
+            this.setVisible(false);
             inf.setVisible(true);
             sistema.setInfoMensaje(inf);
             inf.getAcep().setEnabled(false);

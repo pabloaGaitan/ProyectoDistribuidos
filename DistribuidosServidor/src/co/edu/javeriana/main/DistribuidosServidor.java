@@ -60,7 +60,6 @@ public class DistribuidosServidor {
     public static void main(String[] args) throws IllegalAccessException {
         cargarCoordinador("coordinador.txt");
         registrarse();
-        System.out.println("Se registró");
         MainThread listener = new MainThread();
         listener.start();
         

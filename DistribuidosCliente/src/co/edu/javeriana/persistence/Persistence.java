@@ -29,7 +29,7 @@ public class Persistence {
     
     
     
-    public static void cargarCoordinador(String arch){
+    public static void cargarCoordinador(String arch) throws Exception{
         String cadena = new String();
         try {
             FileInputStream f = new FileInputStream(arch);
@@ -41,7 +41,7 @@ public class Persistence {
             puertoCoordinador = Integer.parseInt(tok.nextToken());
             
         } catch (Exception ex) {
-            Logger.getLogger(Persistence.class.getName()).log(Level.SEVERE, null, ex);
+            throw ex;
         }
         
     }

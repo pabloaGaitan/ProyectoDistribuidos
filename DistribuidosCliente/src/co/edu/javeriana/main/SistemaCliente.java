@@ -7,11 +7,11 @@ package co.edu.javeriana.main;
 
 import co.edu.javeriana.GUI.InfoMensajes;
 import co.edu.javeriana.data.DataObject;
-import static co.edu.javeriana.main.DistribuidosCliente.menu;
 import co.edu.javeriana.persistence.Persistence;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.ConnectException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -78,11 +78,23 @@ public class SistemaCliente {
         return data;
     }
     
-    public void enviarMensaje(List<Integer> servs,List<String> opc,List<String> total,List<String> intervalo,List<Boolean> periodico){
+    public int maxIntervalo(List<String> intervalo){
+        int max = 0;
+        for (String i : intervalo) {
+            int j = Integer.parseInt(i)*1000;
+            if (j > max)
+                max = j;
+        }
+        return max*2;
+    }
+    
+    public void enviarMensaje(List<Integer> servs,List<String> opc,List<String> total,
+            List<String> intervalo,List<Boolean> periodico) throws Exception{
         DataObject data = new DataObject();
         try {
             data = construirPaquete(servs, opc, total, intervalo, periodico);
             Socket socket = new Socket(Persistence.getIpCoordinador(),Persistence.getPuertoCoordinador());
+            socket.setSoTimeout(maxIntervalo(intervalo));
             ObjectOutputStream buffer = new ObjectOutputStream(socket.getOutputStream());
             buffer.writeObject(data);
             int mensajesRec = 0;
@@ -107,10 +119,11 @@ public class SistemaCliente {
                     mensajesRec++;
                 }
                 conts.put(data.getIdServidor(),conts.get(data.getIdServidor())-1);
-            }
-            
-        } catch (Exception ex) {
-            ex.printStackTrace();
+            }        
+        }catch(ConnectException e){
+            throw e;
+        }catch (Exception ex) {
+            throw ex;
         }
     }
     
@@ -127,8 +140,6 @@ public class SistemaCliente {
         mensaje.put(1, map);
         data.setMensaje(mensaje);
         data.setOperacion(2);
-        data.setPeriodica(false);
-        data.setTiempoTotal(0);
         try {
             Socket socket = new Socket(Persistence.getIpCoordinador(),Persistence.getPuertoCoordinador());
             ObjectOutputStream buffer = new ObjectOutputStream(socket.getOutputStream());

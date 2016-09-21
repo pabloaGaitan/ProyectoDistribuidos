@@ -7,6 +7,7 @@ package co.edu.javeriana.thread;
 
 import co.edu.javeriana.main.SistemaCliente;
 import java.util.List;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -31,7 +32,11 @@ public class RecibirThread extends Thread implements Runnable{
     }
     
     public void run(){
-        sistema.enviarMensaje(servs, opc, total, intervalo, periodico);
+        try{
+            sistema.enviarMensaje(servs, opc, total, intervalo, periodico);
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, e.toString(), "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
         sistema.getInfo().getAcep().setEnabled(true);
     }
 }

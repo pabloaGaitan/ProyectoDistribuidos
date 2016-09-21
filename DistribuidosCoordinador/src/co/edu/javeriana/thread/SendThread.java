@@ -57,7 +57,7 @@ public class SendThread extends Thread implements Runnable{
                 break;
             case 2:
                 numeroServidores();
-                System.out.println("pregunta num servidores");
+                System.out.println("Pregunta numero de servidores");
                 break;
             case 3:
                 enviarServidor();
@@ -121,16 +121,16 @@ public class SendThread extends Thread implements Runnable{
         ObjectOutputStream buffer = null;
         ObjectInputStream bufferIn = null;
         if(idServidor >= MainThread.getServidores().size()){
-            System.out.println("error, id no existe"); // servidor no existe
+            System.out.println("Error, id no existe"); // servidor no existe
             data.getMensaje().get(idServidor+1).put(405, "Servidor no existe");
-            MainThread.getServidores().remove(idServidor);
+            //MainThread.getServidores().remove(idServidor);
             responderCliente();
         }else{
-            ServidorPuerto servidorDestino = MainThread.getServidores().get(idServidor);
-            long currentTime;
-            int cont = 1;
-            if(containsServidor(servidorDestino.getIp())){
-                try{
+            try{
+                ServidorPuerto servidorDestino = MainThread.getServidores().get(idServidor);
+                long currentTime;
+                int cont = 1;
+                if(containsServidor(servidorDestino.getIp())){
                     if(data.getMensaje().get(idServidor+1).get(9).equals("1")){
                         long tiempoTotal = Integer.parseInt(data.getMensaje().get(idServidor+1).get(10));
                         long intervalo = Integer.parseInt(data.getMensaje().get(idServidor+1).get(11));
@@ -139,8 +139,6 @@ public class SendThread extends Thread implements Runnable{
                             if((System.nanoTime()-startTime)/1000000000 == intervalo*cont){
                                 socket = new Socket(servidorDestino.getIp(),Integer.parseInt(servidorDestino.getPuerto()));
                                 buffer = new ObjectOutputStream(socket.getOutputStream());
-                                /*if(cont == (data.getTiempoTotal()/data.getIntervalo()))
-                                    data.setUltimo(true);*/
                                 buffer.writeObject(data);
                                 bufferIn = new ObjectInputStream(socket.getInputStream());
                                 data = (DataObject)bufferIn.readObject();
@@ -159,14 +157,20 @@ public class SendThread extends Thread implements Runnable{
                         socket.close();
                         responderCliente();
                     }
-                }catch(ConnectException ex){
-                    System.out.println("time");
-                    data.getMensaje().get(idServidor+1).put(404, "Servidor caido");
-                    MainThread.getServidores().remove(idServidor);
-                    responderCliente();
-                }catch(Exception e){
-                    e.printStackTrace();
                 }
+            }catch(ConnectException ex){
+                System.out.println("Time out servidor " + idServidor+1);
+                data.getMensaje().get(idServidor+1).put(404, "Servidor caido");
+                try{
+                    if(MainThread.getServidores().size() > idServidor)
+                        MainThread.getServidores().remove(idServidor);
+                }catch(IndexOutOfBoundsException e){
+                    data.getMensaje().get(idServidor+1).put(404, "Servidor caido");
+                    responderCliente();
+                }
+                responderCliente();
+            }catch(Exception exe){
+                exe.printStackTrace();
             }
         }
     }

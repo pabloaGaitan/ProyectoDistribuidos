@@ -21,13 +21,24 @@ import javax.swing.table.TableColumn;
  */
 public class InfoMensajes extends javax.swing.JFrame {
     
+    private Principal main;
+    
     /**
      * Creates new form InfoMensajes
      */
     public InfoMensajes() {
         initComponents();
+        this.setTitle("Recibidor de mensajes");
         llenarTable();
         this.setResizable(false);
+    }
+    
+    public void setMain(Principal main){
+        this.main = main;
+    }
+    
+    public Principal getMain(){
+        return this.main;
     }
     
     public JButton getAcep(){
@@ -137,7 +148,8 @@ public class InfoMensajes extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void acepActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_acepActionPerformed
-        this.setVisible(false); 
+        this.setVisible(false);
+        main.setVisible(true);
         // TODO add your handling code here:
     }//GEN-LAST:event_acepActionPerformed
 
