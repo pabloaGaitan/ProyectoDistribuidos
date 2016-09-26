@@ -201,6 +201,9 @@ public class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_BenviarConsultaActionPerformed
     
+    /**
+     * Se encarga de llenar la tabla con el formato dado.
+     */
     public void llenarTable(int serv){
         DefaultTableModel model = new DefaultTableModel(){
             public Class getColumnClass(int indice){

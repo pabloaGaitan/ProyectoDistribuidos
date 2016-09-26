@@ -35,6 +35,9 @@ import org.hyperic.sigar.Swap;
 /**
  *
  * @author HP
+ *  Este hilo trata el mensaje que llega al listener, según la operación que
+ *  se especifica en el DataObject, se ejecutará una acción diferente.
+ * 
  */
 public class SendThread extends Thread implements Runnable {
     
@@ -46,6 +49,9 @@ public class SendThread extends Thread implements Runnable {
         this.cliente = cliente;
     }
     
+    /**
+     * Método que ejecutará el hilo.
+     */
     public void run(){
         
         try {
@@ -66,6 +72,9 @@ public class SendThread extends Thread implements Runnable {
         }
     }
     
+    /**
+     * Se encarga de clasificar los recursos que el cliente solicito en el mensaje.
+     */ 
     public void clasificarRecursos(){
         Map<Integer,String> mapa;
         Map<Integer,String> mapaDatos = recursos();
@@ -86,6 +95,9 @@ public class SendThread extends Thread implements Runnable {
         System.out.println(mapa.toString());
     }
     
+    /**
+     * Se encarga de obtener los recursos del computador.
+     */ 
     public Map<Integer,String> recursos(){
         Map<Integer,String> mapa = new HashMap<>();
         OperatingSystem sys = OperatingSystem.getInstance();

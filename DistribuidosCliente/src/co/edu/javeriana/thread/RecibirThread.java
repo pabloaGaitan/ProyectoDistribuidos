@@ -12,6 +12,7 @@ import javax.swing.JOptionPane;
 /**
  *
  * @author redes
+ * Este hilo se encarga de poner la informacion en la tabla conforme va llegando
  */
 public class RecibirThread extends Thread implements Runnable{
     
@@ -30,7 +31,9 @@ public class RecibirThread extends Thread implements Runnable{
         this.intervalo = intervalo;
         this.periodico = periodico;
     }
-    
+    /**
+     * Se encarga de enviar, recibir y actualizar la tabla conforme llega un mensaje
+     */
     public void run(){
         try{
             sistema.enviarMensaje(servs, opc, total, intervalo, periodico);

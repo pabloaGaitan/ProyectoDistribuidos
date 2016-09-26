@@ -27,6 +27,7 @@ import javax.swing.JOptionPane;
 /**
  *
  * @author redes
+ * Se encuentran las operaciones que puede hacer el cliente.
  */
 public class SistemaCliente {
     
@@ -42,6 +43,15 @@ public class SistemaCliente {
         return inf;
     }
     
+    /**
+     * Se encarga de construir el paquete a enviar con la informacion de las peticiones
+     * @param servs lista con los ids de los servidores 
+     * @param opc lista de operaciones a consultar en el servidor
+     * @param total lista de tiempos totales si el mensaje es periodico
+     * @param intervalo lista de intervalos de tiempo si el mensaje es periodico
+     * @param periodico lista que nos informa si el mensaje es periodico
+     * @return el mensaje armado con la informacion de las listas
+     */
     public DataObject construirPaquete(List<Integer> servs,List<String> opc,List<String> total,List<String> intervalo,List<Boolean> periodico){
         Map<Integer,Map<Integer, String>> mensaje = new HashMap<>();
         Map<Integer, String> map = new HashMap<>();
@@ -78,6 +88,11 @@ public class SistemaCliente {
         return data;
     }
     
+    /**
+     * Se encarga de buscar el intervalo mas alto de la lista 
+     * @param intervalo lista de intervalos de tiempo
+     * @return el intervalo de tiempo mas alto de la lista
+     */
     public int maxIntervalo(List<String> intervalo){
         int max = 0;
         for (String i : intervalo) {
@@ -88,6 +103,14 @@ public class SistemaCliente {
         return max*2;
     }
     
+    /**
+     * Se encarga de enviar la solicitud de informacion y espera la respuesta.
+     * @param servs lista con los ids de los servidores 
+     * @param opc lista de operaciones a consultar en el servidor
+     * @param total lista de tiempos totales si el mensaje es periodico
+     * @param intervalo lista de intervalos de tiempo si el mensaje es periodico
+     * @param periodico lista que nos informa si el mensaje es periodico
+     */
     public void enviarMensaje(List<Integer> servs,List<String> opc,List<String> total,
             List<String> intervalo,List<Boolean> periodico) throws Exception{
         DataObject data = new DataObject();
@@ -127,6 +150,10 @@ public class SistemaCliente {
         }
     }
     
+    /**
+     * Se encarga de enviar la solicitud de cantidad de servidores y espera su respuesta
+     * @return la cantidad de servidores
+     */
     public String cantServers(){
         Map<Integer,Map<Integer, String>> mensaje = new HashMap<>();
         Map<Integer, String> map = new HashMap<>();

@@ -12,6 +12,7 @@ import java.util.Map;
 /**
  *
  * @author ASUS
+ * Clase que representa el objeto que se estará enviando entre las máquinas
  */
 public class DataObject implements Serializable{
     

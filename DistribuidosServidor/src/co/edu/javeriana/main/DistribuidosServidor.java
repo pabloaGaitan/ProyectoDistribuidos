@@ -30,7 +30,7 @@ import org.hyperic.sigar.*;
         
 /**
  *
- * @author HP
+ * Clase que representa el servidor el cual escucha solicitudes y envia su respectiva respuesta
  */
 public class DistribuidosServidor {
     
@@ -65,7 +65,11 @@ public class DistribuidosServidor {
         
         
     }
-    
+    /**
+     * Se encarga de enviar un mensaje de registro al coordinador
+     * 
+     * 
+     */
     public static void registrarse(){
         String ip;
         DataObject dato = new DataObject();
@@ -86,6 +90,11 @@ public class DistribuidosServidor {
         } 
     }
     
+    /**
+     * Se encarga de leer el archivo y obtener la informacion del coordinador
+     * @param arch nombre del archivo donde se encuentra la informacion del coordinador 
+     * 
+     */
     public static void cargarCoordinador(String arch){
         String cadena = new String();
         try {

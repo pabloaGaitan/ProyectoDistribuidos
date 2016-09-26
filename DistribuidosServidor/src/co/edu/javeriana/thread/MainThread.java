@@ -18,9 +18,14 @@ import java.util.logging.Logger;
 /**
  *
  * @author HP
+ * En este hilo llegan todos los mensajes por parte del coordinador.
+ * de aquí se distribuye a un hilo para que se trate dicho mensaje.
  */
 public class MainThread extends Thread implements Runnable{
     
+    /**
+     * Se encarga de ejecutar el listener de mensajes en el puerto 1594
+     */
     public void run(){
         ServerSocket socket = null;
         try{

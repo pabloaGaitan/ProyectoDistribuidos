@@ -18,6 +18,7 @@ import javax.swing.table.TableColumn;
 /**
  *
  * @author redes
+ * Interfaz grafica donde se muestan los mensajes entrantes.
  */
 public class InfoMensajes extends javax.swing.JFrame {
     
@@ -45,6 +46,9 @@ public class InfoMensajes extends javax.swing.JFrame {
         return this.acep;
     }
     
+    /**
+     * Se encarga de agregar un nuevo mensaje a la tabla.
+     */
     public void agregar(Map<Integer,String> mapa, int idServidor){
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         Vector<String> vector = new Vector();
@@ -62,6 +66,9 @@ public class InfoMensajes extends javax.swing.JFrame {
         repaint();
     }
     
+    /**
+     * Se encarga de darle el formato especifico a la tabla.
+     */
     public void llenarTable(){
         DefaultTableModel model = new DefaultTableModel(){
             public Class getColumnClass(int indice){

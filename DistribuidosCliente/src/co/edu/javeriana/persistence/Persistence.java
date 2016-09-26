@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 /**
  *
  * @author HP
+ * Se encarga de almacenar el puerto y la direccion IP del coordinador
  */
 public class Persistence {
     
@@ -28,7 +29,11 @@ public class Persistence {
     }
     
     
-    
+    /**
+     * Se encarga de leer el archivo y obtener la informacion del coordinador
+     * @param arch nombre del archivo donde se encuentra la informacion del coordinador 
+     * 
+     */
     public static void cargarCoordinador(String arch) throws Exception{
         String cadena = new String();
         try {
